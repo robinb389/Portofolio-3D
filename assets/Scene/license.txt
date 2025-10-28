@@ -1,0 +1,11 @@
+Model Information:
+* title:	Scene made of Free assets found on Sketchfab
+* source:	https://sketchfab.com/3d-models/scene-made-of-free-assets-found-on-sketchfab-67303dadaee54b9388d233214c5c37cd
+* author:	Warkarma (https://sketchfab.com/warkarma)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Scene made of Free assets found on Sketchfab" (https://sketchfab.com/3d-models/scene-made-of-free-assets-found-on-sketchfab-67303dadaee54b9388d233214c5c37cd) by Warkarma (https://sketchfab.com/warkarma) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
