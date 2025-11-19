@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Robinbir Singh — 3D Portfolio</title>
+
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.2.0/dist/aframe-extras.min.js"></script>
+
+  <style>
+    /* ------------------ Global ------------------ */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      height: 100%;
+      background: #070812;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #e6eef8;
+    }
+    a-scene {
+      height: 100vh;
+      width: 100vw;
+      display: block;
+    }
+
+    /* ------------------ Overlay & Panels ------------------ */
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+    }
+    #overlay.active { display: flex; }
+
+    .panel {
+      width: min(720px, 92%);
+      background: rgba(8,12,25,0.96);
+      border: 1px solid rgba(100,120,255,0.06);
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(3,6,20,0.7);
+    }
+    .panel h2 {
+      font-size: 20px;
+      color: #9cc2ff;
+      margin-bottom: 8px;
+    }
+    .panel p {
+      color: #cfe6ff;
+      line-height: 1.45;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .panel .meta {
+      color: #9fb7ff;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .panel .links {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    /* ------------------ Buttons ------------------ */
+    .btn {
+      background: linear-gradient(90deg,#2b6ef6,#6f4ef6);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .btn.ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.06);
+      color: #cfe6ff;
+    }
+
+    /* ------------------ Credits ------------------ */
+    #credits {
+      position: fixed;
+      left: 18px;
+      top: 18px;
+      z-index: 80;
+      background: rgba(6,9,18,0.8);
+      border: 1px solid rgba(255,255,255,0.03);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #dbeafe;
+    }
+
+    /* ------------------ Responsive ------------------ */
+    @media (max-width: 640px) {
+      .panel {
+        padding: 16px;
+      }
+      .panel h2 {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ------------------ Credits ------------------ -->
+  <div id="credits">
+    <strong>Robinbir Singh</strong><br>
+    Click the boy for info • Click books for projects
+  </div>
+
+  <!-- ------------------ Overlay Panel ------------------ -->
+  <div id="overlay" onclick="closePanel(event)">
+    <div id="panel" class="panel" onclick="event.stopPropagation()">
+      <h2 id="panel-title">Title</h2>
+      <p id="panel-desc">Description</p>
+      <div class="meta" id="panel-meta"></div>
+      <div class="links" id="panel-links"></div>
+      <div style="margin-top:12px; text-align:right;">
+        <button class="btn ghost" onclick="closePanel()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ------------------ 3D Scene ------------------ -->
+  <a-scene background="color: #060718">
+
+    <!-- Assets -->
+    <a-assets>
+     
+      <a-asset-item id="laptop" src="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/Laptop/glTF/Laptop.gltf"></a-asset-item>
+      <a-asset-item id="boyModel" src="assets/boy/scene.gltf"></a-asset-item>
+    </a-assets>
+
+    <!-- Lights -->
+    <a-light type="ambient" color="#ffffff" intensity="0.6"></a-light>
+    <a-light type="directional" color="#ffffff" intensity="0.8" position="2 4 2"></a-light>
+    <a-light type="spot" color="#cfe8ff" intensity="0.35" angle="45" position="0 3 2" target="#desk"></a-light>
+    <a-light type="point" color="#dbeafe" intensity="0.4" distance="4" position="0 2 0.5"></a-light>
+
+    <!-- Floor -->
+     <a-plane color="#071028" rotation="-90 0 0" width="12" height="20"></a-plane>
+
+    <!-- Back wall -->
+    <a-box position="0 1.5 -6" depth="0.1" height="3.5" width="12" color="#071028"></a-box>
+
+    <!-- Desk -->
+    <a-box id="desk" color="#111827" position="0 0.6 -2" width="4.2" height="0.1" depth="1.8"></a-box>
+    <a-box color="#0b1220" position="-1.9 0.25 -2.7" width="0.12" height="0.5" depth="0.12"></a-box>
+    <a-box color="#0b1220" position="1.9 0.25 -2.7" width="0.12" height="0.5" depth="0.12"></a-box>
+    <a-box color="#0b1220" position="-1.9 0.25 -1.3" width="0.12" height="0.5" depth="0.12"></a-box>
+    <a-box color="#0b1220" position="1.9 0.25 -1.3" width="0.12" height="0.5" depth="0.12"></a-box>
+
+    <!-- Chair behind desk -->
+    <a-entity position="0 0.2 -2.8">
+      <a-box color="#1f2937" width="0.6" height="0.1" depth="0.6" position="0 0.3 0"></a-box>
+      <a-box color="#1f2937" width="0.6" height="0.6" depth="0.1" position="0 0.6 -0.25"></a-box>
+      <a-box color="#111827" width="0.1" height="0.3" depth="0.1" position="-0.25 0.15 0.25"></a-box>
+      <a-box color="#111827" width="0.1" height="0.3" depth="0.1" position="0.25 0.15 0.25"></a-box>
+      <a-box color="#111827" width="0.1" height="0.3" depth="0.1" position="-0.25 0.15 -0.25"></a-box>
+      <a-box color="#111827" width="0.1" height="0.3" depth="0.1" position="0.25 0.15 -0.25"></a-box>
+    </a-entity>
+
+    <!-- Laptop -->
+    <a-entity gltf-model="#laptop" position="-0.9 0.8 -2" rotation="0 10 0" scale="0.4 0.4 0.4"></a-entity>
+
+    <!-- Books -->
+    <a-entity class="book clickable" position="-0.4 0.78 -1.75" rotation="0 15 0" data-project="0">
+      <a-box depth="0.18" height="0.36" width="0.24" color="#ef4444" class="hoverable"></a-box>
+      <a-text value="Project A" position="0 0.22 0.12" rotation="-20 0 0" align="center" color="#fff" width="1"></a-text>
+    </a-entity>
+
+    <a-entity class="book clickable" position="0.4 0.78 -1.7" rotation="0 -10 0" data-project="1">
+      <a-box depth="0.18" height="0.36" width="0.24" color="#3b82f6" class="hoverable"></a-box>
+      <a-text value="Project B" position="0 0.22 0.12" rotation="-20 0 0" align="center" color="#fff" width="1"></a-text>
+    </a-entity>
+
+    <a-entity class="book clickable" position="1.05 0.78 -1.9" rotation="0 -5 0" data-project="2">
+      <a-box depth="0.18" height="0.36" width="0.24" color="#22c55e" class="hoverable"></a-box>
+      <a-text value="Project C" position="0 0.22 0.12" rotation="-20 0 0" align="center" color="#fff" width="1"></a-text>
+    </a-entity>
+
+    <!-- Boy sitting -->
+    <a-entity id="boyRoot" position="0 -0.3 -3.0" rotation="0 0 0" class="clickable-boy" scale="1.986 1.986 1.986">
+      <a-entity id="boyModelEntity" gltf-model="#boyModel" scale="0.6 0.6 0.6" visible="true"></a-entity>
+      <a-entity id="boyFallback" visible="false" position="0 0 0">
+        <a-cylinder height="0.5" radius="0.25" color="#9CA3AF" position="0 0.25 0"></a-cylinder>
+        <a-sphere radius="0.22" color="#e6eef8" position="0 0.7 0"></a-sphere>
+        <a-box depth="0.18" height="0.04" width="0.6" color="#111827" position="0 0.15 0"></a-box>
+      </a-entity>
+    </a-entity>
+
+    <!-- Minimal lamp -->
+    <a-entity position="1.7 1 -1.2">
+      <a-cylinder height="0.02" radius="0.2" color="#111827"></a-cylinder>
+      <a-cone height="0.18" radius-bottom="0.25" radius-top="0.02" color="#111827" position="0 -0.12 0"></a-cone>
+      <a-light type="point" color="#dbeafe" intensity="0.25" distance="3" position="0 -0.05 0"></a-light>
+    </a-entity>
+
+    <!-- Name text -->
+    <a-text value="Robinbir Singh" align="center" position="0 1.9 -1.9" color="#9cc2ff" width="3"></a-text>
+
+    <!-- Flying Rotating Shapes -->
+    <a-entity id="flyingShapes">
+      <!-- Shape 1 -->
+      <a-box color="#facc15" depth="0.3" height="0.3" width="0.3" position="-3 2 -5"
+            animation="property: rotation; to: 360 360 360; loop: true; dur: 5000; easing: linear"
+            animation__move="property: position; dir: alternate; to: 3 4 -5; loop: true; dur: 7000; easing: easeInOutSine"></a-box>
+
+      <!-- Shape 2 -->
+      <a-sphere color="#22c55e" radius="0.25" position="2 1 -4"
+                animation="property: rotation; to: 360 360 360; loop: true; dur: 4000; easing: linear"
+                animation__move="property: position; dir: alternate; to: -2 3 -4; loop: true; dur: 6000; easing: easeInOutSine"></a-sphere>
+
+      <!-- Shape 3 -->
+      <a-tetrahedron color="#3b82f6" radius="0.2" position="0 3 -6"
+                      animation="property: rotation; to: 360 360 360; loop: true; dur: 4500; easing: linear"
+                      animation__move="property: position; dir: alternate; to: 0 1 -3; loop: true; dur: 8000; easing: easeInOutSine"></a-tetrahedron>
+
+      <!-- Shape 4 -->
+      <a-cylinder color="#f472b6" radius="0.15" height="0.4" position="1 2 -3"
+                  animation="property: rotation; to: 360 360 360; loop: true; dur: 3500; easing: linear"
+                  animation__move="property: position; dir: alternate; to: -1 3 -2; loop: true; dur: 6000; easing: easeInOutSine"></a-cylinder>
+
+      <!-- Shape 5 -->
+      <a-box color="#06b6d4" depth="0.25" height="0.25" width="0.25" position="-1 3 -4"
+            animation="property: rotation; to: 360 360 360; loop: true; dur: 4000; easing: linear"
+            animation__move="property: position; dir: alternate; to: 1 1 -5; loop: true; dur: 7000; easing: easeInOutSine"></a-box>
+
+      <!-- Shape 6 -->
+      <a-sphere color="#f97316" radius="0.2" position="2 4 -6"
+                animation="property: rotation; to: 360 360 360; loop: true; dur: 5000; easing: linear"
+                animation__move="property: position; dir: alternate; to: -2 2 -5; loop: true; dur: 8000; easing: easeInOutSine"></a-sphere>
+
+      <!-- Shape 7 -->
+      <a-tetrahedron color="#a855f7" radius="0.15" position="-2 2 -3"
+                      animation="property: rotation; to: 360 360 360; loop: true; dur: 3500; easing: linear"
+                      animation__move="property: position; dir: alternate; to: 2 3 -4; loop: true; dur: 6000; easing: easeInOutSine"></a-tetrahedron>
+
+      <!-- Shape 8 -->
+      <a-cylinder color="#22d3ee" radius="0.1" height="0.3" position="3 3 -5"
+                  animation="property: rotation; to: 360 360 360; loop: true; dur: 4000; easing: linear"
+                  animation__move="property: position; dir: alternate; to: -3 1 -4; loop: true; dur: 7000; easing: easeInOutSine"></a-cylinder>
+
+      <!-- Shape 9 -->
+      <a-box color="#f87171" depth="0.2" height="0.2" width="0.2" position="0 1 -6"
+            animation="property: rotation; to: 360 360 360; loop: true; dur: 4500; easing: linear"
+            animation__move="property: position; dir: alternate; to: 0 3 -5; loop: true; dur: 6000; easing: easeInOutSine"></a-box>
+
+      <!-- Shape 10 -->
+      <a-sphere color="#4ade80" radius="0.18" position="-3 4 -3"
+                animation="property: rotation; to: 360 360 360; loop: true; dur: 5000; easing: linear"
+                animation__move="property: position; dir: alternate; to: 3 2 -4; loop: true; dur: 8000; easing: easeInOutSine"></a-sphere>
+      </a-entity>
+
+    <!-- Camera -->
+    <a-entity camera look-controls position="0 1.6 0">
+      <a-entity cursor="rayOrigin: mouse"></a-entity>
+    </a-entity>
+  </a-scene>
+
+  <!-- ------------------ Script ------------------ -->
+  <script>
+    // ---------- Personal Info ----------
+    const yourBio = {
+      name: "Robinbir Singh",
+      about: "Hey — I am a software developer and I'm studying in school right now. I also work at Thor Especialidades.",
+      skills: "HTML • CSS • Java • Python",
+      contact: "rsingh@inscastellet.cat"
+    };
+
+    // ---------- Projects ----------
+    const projects = [
+      { title: "Project A — AI Dashboard", description: "A simple dashboard integrating AI features.", tech: "React • Node.js • OpenAI", link: "#" },
+      { title: "Project B — VR Museum", description: "WebVR experience built with A-Frame.", tech: "A-Frame • Blender", link: "#" },
+      { title: "Project C — Game Stats", description: "Live game stats tracker.", tech: "Vue • Firebase", link: "#" }
+    ];
+
+    // ---------- DOM Elements ----------
+    const overlay = document.getElementById('overlay');
+    const panelTitle = document.getElementById('panel-title');
+    const panelDesc = document.getElementById('panel-desc');
+    const panelMeta = document.getElementById('panel-meta');
+    const panelLinks = document.getElementById('panel-links');
+
+    // ---------- Panel Functions ----------
+    function openPanel({ title, desc, metaHTML, linksHTML }) {
+      panelTitle.textContent = title || '';
+      panelDesc.textContent = desc || '';
+      panelMeta.innerHTML = metaHTML || '';
+      panelLinks.innerHTML = linksHTML || '';
+      overlay.classList.add('active');
+      animateCameraTo({ x: 0, y: 1.6, z: 3 }, 650);
+    }
+
+    function closePanel(e) {
+      overlay.classList.remove('active');
+      animateCameraTo({ x: 0, y: 1.6, z: 4 }, 650);
+    }
+
+    function showBioPanel() {
+      openPanel({
+        title: yourBio.name,
+        desc: yourBio.about,
+        metaHTML: `<strong>Skills:</strong> ${yourBio.skills}<br><strong>Contact:</strong> ${yourBio.contact}`,
+        linksHTML: `<a class="btn" href="mailto:${yourBio.contact}">Email</a>
+                    <a class="btn ghost" href="#" onclick="closePanel();return false;">Dismiss</a>`
+      });
+    }
+
+    function showProject(index) {
+      const p = projects[index];
+      openPanel({
+        title: p.title,
+        desc: p.description,
+        metaHTML: `<strong>Tech:</strong> ${p.tech}`,
+        linksHTML: `<a class="btn" href="${p.link}" target="_blank" rel="noopener">View Repo</a>
+                    <a class="btn ghost" href="#" onclick="closePanel();return false;">Close</a>`
+      });
+    }
+
+    function animateCameraTo(pos, duration = 700) {
+      const rig = document.getElementById('cameraRig');
+      if (!rig) return;
+      rig.removeAttribute('animation__move');
+      rig.setAttribute('animation__move', {
+        property: 'position',
+        to: `${pos.x} ${pos.y} ${pos.z}`,
+        dur: duration,
+        easing: 'easeInOutQuad'
+      });
+    }
+
+    // ---------- Event Listeners ----------
+    setTimeout(() => {
+      document.querySelectorAll('.book').forEach(bookEl => {
+        bookEl.addEventListener('mouseenter', () => bookEl.object3D.scale.set(1.08,1.08,1.08));
+        bookEl.addEventListener('mouseleave', () => bookEl.object3D.scale.set(1,1,1));
+        bookEl.addEventListener('click', () => showProject(parseInt(bookEl.getAttribute('data-project'))));
+      });
+
+      const boyRoot = document.getElementById('boyRoot');
+      boyRoot.addEventListener('mouseenter', () => boyRoot.object3D.scale.set(2.000,2.000,2.000));
+      boyRoot.addEventListener('mouseleave', () => boyRoot.object3D.scale.set(1.986,1.986,1.986));
+      boyRoot.addEventListener('click', showBioPanel);
+
+      document.addEventListener('keydown', e => { if(e.key === 'Escape') closePanel(); });
+    }, 800);
+  </script>
+</body>
+</html>
